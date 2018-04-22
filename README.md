@@ -42,7 +42,7 @@ CommandLineAPI are enabled in Bluetooth (SPP).
 
 ### set_loglevel
 
-Set log level commnad.
+Set log level.
 
 #### synopsis
 
@@ -61,7 +61,7 @@ $ set_loglevel TRACE
 
 ### log
 
-Show latest logs command.
+Show latest logs.
 The log capacity is 64.
 
 #### synopsis
@@ -79,7 +79,7 @@ $ log
 
 ### info
 
-Show system info command.
+Show system info.
 
 #### synopsis
 
@@ -92,4 +92,25 @@ info
 ```
 $ info
 version=0.0.1
+```
+
+### set_digital
+
+Set digital pin.
+HIGH or LOW.
+
+#### synopsis
+
+```
+set_digital <pin> <state>
+```
+
+pin : 0, 1, 2, ...
+
+state : HIGH, or LOW
+
+#### example
+
+```
+$ set_digital 13 HIGH
 ```

@@ -89,40 +89,65 @@ bool CommandLine::executeSetLogLevelCommand(const CommandLineParser *parser)
 {
     const char *level = parser->GetFirstArg();
     if (level == 0) {
-        writeError("loglevel: no log level");
+        writeError("set_loglevel: no log level");
         return false;
     }
     if (strcmp(level, "TRACE") == 0) {
-        writeInfo("loglevel: set TRACE");
+        writeInfo("set_loglevel: set TRACE");
         Log::SetLevel(Log::LOG_LEVEL_TRACE);
         return true;
     }
     if (strcmp(level, "DEBUG") == 0) {
-        writeInfo("loglevel: set DEBUG");
+        writeInfo("set_loglevel: set DEBUG");
         Log::SetLevel(Log::LOG_LEVEL_DEBUG);
         return true;
     }
     if (strcmp(level, "INFO") == 0) {
-        writeInfo("loglevel: set INFO");
+        writeInfo("set_loglevel: set INFO");
         Log::SetLevel(Log::LOG_LEVEL_INFO);
         return true;
     }
     if (strcmp(level, "WARN") == 0) {
-        writeInfo("loglevel: set WARN");
+        writeInfo("set_loglevel: set WARN");
         Log::SetLevel(Log::LOG_LEVEL_WARN);
         return true;
     }
     if (strcmp(level, "ERROR") == 0) {
-        writeInfo("loglevel: set ERROR");
+        writeInfo("set_loglevel: set ERROR");
         Log::SetLevel(Log::LOG_LEVEL_ERROR);
         return true;
     }
     if (strcmp(level, "FATAL") == 0) {
-        writeInfo("loglevel: set FATAL");
+        writeInfo("set_loglevel: set FATAL");
         Log::SetLevel(Log::LOG_LEVEL_FATAL);
         return true;
     }
-    writeError("loglevel: unknown level");
+    writeError("set_loglevel: unknown level");
+    return false;
+}
+
+bool CommandLine::executeSetDigitalCommand(const CommandLineParser *parser)
+{
+    const char *arg = parser->GetFirstArg();
+    if (arg == 0) {
+        writeError("set_digital: invalid index");
+        return false;
+    }
+    int pin = atoi(arg);
+
+    const char *state = parser->NextArg(arg);
+    if (strcmp(state, "HIGH") == 0) {
+        pinMode(pin, OUTPUT);
+        digitalWrite(pin, HIGH);
+        return true;
+    }
+    if (strcmp(state, "LOW") == 0) {
+        pinMode(pin, OUTPUT);
+        digitalWrite(pin, LOW);
+        return true;
+    }
+
+    writeError("set_digital: unknown level");
     return false;
 }
 
@@ -149,6 +174,9 @@ bool CommandLine::executeCommandLine(const char *line)
     }
     if (strcmp(parser.GetName(), "info") == 0) {
         return executeInfoCommand(&parser);
+    }
+    if (strcmp(parser.GetName(), "set_digital") == 0) {
+        return executeSetDigitalCommand(&parser);
     }
     writeError("parser: unknown command");
     return true;
