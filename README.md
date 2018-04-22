@@ -109,8 +109,32 @@ pin : 0, 1, 2, ...
 
 state : HIGH, or LOW
 
+[pinmap](https://raw.githubusercontent.com/gojimmypi/ESP32/master/images/myESP32%20DevKitC%20pinout.png)
+
 #### example
 
 ```
 $ set_digital 13 HIGH
+```
+
+### set_servo
+
+Set servo pin.
+
+#### synopsis
+
+```
+set_servo <pin> <degrees>
+```
+
+pin : 0, 1, 2, ...
+
+degrees : from 0 to 180
+
+[pinmap](https://raw.githubusercontent.com/gojimmypi/ESP32/master/images/myESP32%20DevKitC%20pinout.png)
+
+#### example
+
+```
+$ set_servo 13 0
 ```

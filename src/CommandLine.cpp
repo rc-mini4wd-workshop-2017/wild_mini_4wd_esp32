@@ -1,4 +1,5 @@
 
+#include "Servo.h"
 #include "CommandLine.h"
 #include "Version.h"
 #include "Log.h"
@@ -151,6 +152,31 @@ bool CommandLine::executeSetDigitalCommand(const CommandLineParser *parser)
     return false;
 }
 
+bool CommandLine::executeSetServoCommand(const CommandLineParser *parser)
+{
+    const char *arg = parser->GetFirstArg();
+    if (arg == 0) {
+        writeError("set_servo: invalid index");
+        return false;
+    }
+    int pin = atoi(arg);
+
+    arg = parser->NextArg(arg);
+    if (arg == 0) {
+        writeError("set_servo: invalid angle");
+        return false;
+    }
+    int degrees = atoi(arg);
+
+    Servo servo;
+    servo.attach(pin);
+    servo.write(degrees);
+    vTaskDelay(200);
+    servo.detach();
+
+    return true;
+}
+
 bool CommandLine::executeInfoCommand(const CommandLineParser *parser)
 {
     writeMessage("version=");
@@ -177,6 +203,9 @@ bool CommandLine::executeCommandLine(const char *line)
     }
     if (strcmp(parser.GetName(), "set_digital") == 0) {
         return executeSetDigitalCommand(&parser);
+    }
+    if (strcmp(parser.GetName(), "set_servo") == 0) {
+        return executeSetServoCommand(&parser);
     }
     writeError("parser: unknown command");
     return true;

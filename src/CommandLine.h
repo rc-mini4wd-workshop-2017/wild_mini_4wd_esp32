@@ -23,6 +23,7 @@ private:
     bool executeSetLogLevelCommand(const CommandLineParser *parser);
     bool executeInfoCommand(const CommandLineParser *parser);
     bool executeSetDigitalCommand(const CommandLineParser *parser);
+    bool executeSetServoCommand(const CommandLineParser *parser);
     bool executeCommandLine(const char *line);
 
 private:
