@@ -4,7 +4,7 @@
 class CommandLineParser
 {
 public:
-    CommandLineParser(const char *line) : line(line) {}
+    CommandLineParser(const char *line) : line(line), size(0) {}
 
 public:
     bool Parse() {

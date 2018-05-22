@@ -1,9 +1,17 @@
 
-#include "Servo.h"
+#include <Servo.h>
+#include <Wire.h>
 #include "CommandLine.h"
 #include "Version.h"
 #include "Log.h"
 #include "CommandLineParser.h"
+
+const int I2C_SDA = 21;
+const int I2C_SCL = 22;
+
+const int RV8830_WRITE_ADDRESS = 0xc8;
+const int RV8830_READ_ADDRESS  = 0xc9;
+const int RV8830_CONTROL       = 0;
 
 CommandLine::CommandLine()
 {
@@ -12,6 +20,10 @@ CommandLine::CommandLine()
 void CommandLine::Initialize(Stream *stream)
 {
     this->stream = stream;
+    pinMode(I2C_SDA, INPUT_PULLUP);
+    pinMode(I2C_SCL, INPUT_PULLUP);
+    Wire.begin();
+    buf = "";
 }
 
 boolean CommandLine::Analyze()
@@ -21,23 +33,24 @@ boolean CommandLine::Analyze()
     }
 
     char ch = stream->read();
-    Write(ch);
+    analyzeChar(ch);
     return true;
 }
 
-void CommandLine::Write(char ch)
+void CommandLine::analyzeChar(char ch)
 {
     if (ch == '\r') {
         return;
     }
-    writeChar(ch);
 
     switch (ch) {
     case '\n':
         if (buf.length() != 0) {
+            writeMessage(buf.c_str());
+            writeChar('\n');
             executeCommandLine(buf.c_str());
-            buf = String();
         }
+        buf = "";
         writeMessage("$ ");
         break;
     default:
@@ -177,6 +190,23 @@ bool CommandLine::executeSetServoCommand(const CommandLineParser *parser)
     return true;
 }
 
+bool CommandLine::executeSetMotorCommand(const CommandLineParser *parser)
+{
+    const char *arg = parser->GetFirstArg();
+    if (arg == 0) {
+        writeError("set_motor: invalid control value");
+        return false;
+    }
+    int control = atoi(arg);
+
+    Wire.beginTransmission(RV8830_WRITE_ADDRESS);
+    Wire.write(RV8830_CONTROL);
+    Wire.write(control);
+    Wire.endTransmission();
+
+    return true;
+}
+
 bool CommandLine::executeInfoCommand(const CommandLineParser *parser)
 {
     writeMessage("version=");
@@ -206,6 +236,9 @@ bool CommandLine::executeCommandLine(const char *line)
     }
     if (strcmp(parser.GetName(), "set_servo") == 0) {
         return executeSetServoCommand(&parser);
+    }
+    if (strcmp(parser.GetName(), "set_motor") == 0) {
+        return executeSetMotorCommand(&parser);
     }
     writeError("parser: unknown command");
     return true;

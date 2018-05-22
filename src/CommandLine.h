@@ -12,9 +12,9 @@ public:
 public:
     void Initialize(Stream *stream);
     boolean Analyze();
-    void Write(char ch);
 
 private:
+    void analyzeChar(char ch);
     size_t writeMessage(const char *message);
     size_t writeChar(char ch);
     void writeError(const char *message);
@@ -24,6 +24,7 @@ private:
     bool executeInfoCommand(const CommandLineParser *parser);
     bool executeSetDigitalCommand(const CommandLineParser *parser);
     bool executeSetServoCommand(const CommandLineParser *parser);
+    bool executeSetMotorCommand(const CommandLineParser *parser);
     bool executeCommandLine(const char *line);
 
 private:
