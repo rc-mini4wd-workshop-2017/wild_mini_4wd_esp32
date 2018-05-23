@@ -42,16 +42,15 @@ void CommandLine::analyzeChar(char ch)
     if (ch == '\r') {
         return;
     }
+    writeChar(ch);
 
     switch (ch) {
     case '\n':
         if (buf.length() != 0) {
-            writeMessage(buf.c_str());
-            writeChar('\n');
             executeCommandLine(buf.c_str());
         }
         buf = "";
-        writeMessage("$ ");
+        writeMessage("\n");
         break;
     default:
         buf.concat(ch);

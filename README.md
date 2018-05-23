@@ -1,5 +1,11 @@
 # Wild mini 4wd ESP32
 
+## Pin assign
+
+| #    | Function |
+| IO21 | SDA      |
+| IO22 | SCL      |
+
 ## How to connect to ESP32
 
 ### from Linux
@@ -18,9 +24,7 @@ Press CTRL-C for hangup
 terminal 2
 
 ```
-$ sudo stty -F /dev/rfcomm0 115200
-$ echo info >> /dev/rfcomm0
-$ cat /dev/rfcomm0
+$ miniterm.py /dev/rfcomm0
 info
 version=0.0.1
 ```
