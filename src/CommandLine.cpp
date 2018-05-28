@@ -9,8 +9,8 @@
 const int I2C_SDA = 21;
 const int I2C_SCL = 22;
 
-const int RV8830_WRITE_ADDRESS = 0xc8;
-const int RV8830_READ_ADDRESS  = 0xc9;
+const int RV8830_WRITE_ADDRESS = 0x64; // 0xc8 >> 1
+const int RV8830_READ_ADDRESS  = 0x64; // 0xc9 >> 1
 const int RV8830_CONTROL       = 0;
 
 CommandLine::CommandLine()
@@ -23,6 +23,7 @@ void CommandLine::Initialize(Stream *stream)
     pinMode(I2C_SDA, INPUT_PULLUP);
     pinMode(I2C_SCL, INPUT_PULLUP);
     Wire.begin();
+    Wire.setClock(10000);
     buf = "";
 }
 
@@ -198,19 +199,33 @@ bool CommandLine::executeSetMotorCommand(const CommandLineParser *parser)
     }
     int control = atoi(arg);
 
-    Wire.beginTransmission(RV8830_WRITE_ADDRESS);
-    Wire.write(RV8830_CONTROL);
-    Wire.write(control);
-    Wire.endTransmission();
+    for (int i=0; i<10; i++) {
+        Wire.beginTransmission(RV8830_WRITE_ADDRESS);
+        Wire.write(RV8830_CONTROL);
+        Wire.write(control);
 
-    return true;
+        int result = Wire.endTransmission();
+        switch (result) {
+        case 0: writeInfo("set_motor: success");                          return true;
+        case 1: writeError("set_motor: buffer overflow error");           return false;
+        case 2: writeError("set_motor: slave addr: nack received error"); return false;
+        case 3: writeError("set_motor: data: nack received error");       return false;
+        case 4: writeError("set_motor: error");                           return false;
+        }
+        // workaround for esp-32 i2c bug
+        // see http://d.hatena.ne.jp/wakwak_koba/20171228
+        // see https://github.com/espressif/arduino-esp32/issues/349
+        Wire.reset();
+        writeError("set_motor: unknown result error");
+    }
+
+    return false;
 }
 
 bool CommandLine::executeInfoCommand(const CommandLineParser *parser)
 {
     writeMessage("version=");
     writeMessage(VERSION);
-    writeMessage("\n");
     return true;
 }
 
