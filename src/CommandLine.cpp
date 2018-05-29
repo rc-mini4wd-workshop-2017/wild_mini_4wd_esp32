@@ -9,9 +9,7 @@
 const int I2C_SDA = 21;
 const int I2C_SCL = 22;
 
-const int RV8830_WRITE_ADDRESS = 0x64; // 0xc8 >> 1
-const int RV8830_READ_ADDRESS  = 0x64; // 0xc9 >> 1
-const int RV8830_CONTROL       = 0;
+const int RV8830_CONTROL = 0;
 
 CommandLine::CommandLine()
 {
@@ -194,13 +192,20 @@ bool CommandLine::executeSetMotorCommand(const CommandLineParser *parser)
 {
     const char *arg = parser->GetFirstArg();
     if (arg == 0) {
-        writeError("set_motor: invalid control value");
+        writeError("set_motor: invalid address");
+        return false;
+    }
+    int address = atoi(arg);
+
+    arg = parser->NextArg(arg);
+    if (arg == 0) {
+        writeError("set_servo: invalid angle");
         return false;
     }
     int control = atoi(arg);
 
     for (int i=0; i<10; i++) {
-        Wire.beginTransmission(RV8830_WRITE_ADDRESS);
+        Wire.beginTransmission(address);
         Wire.write(RV8830_CONTROL);
         Wire.write(control);
 

@@ -142,3 +142,39 @@ degrees : from 0 to 180
 ```
 $ set_servo 13 0
 ```
+
+### set_motor
+
+Set motor pin(I2C).
+
+#### synopsis
+
+```
+set_motor <i2c address> <vset>
+```
+
+i2c address : 96, 97, 98, ..., 104 (default is 100)
+
+vset : from 0 to 255
+
+see DRV8330 datasheet
+
+#### example
+
+stand by
+
+```
+$ set_motor 100 0
+```
+
+forward (slow)
+
+```
+$ set_motor 100 41
+```
+
+revarsal (slow)
+
+```
+$ set_motor 100 42
+```
