@@ -3,6 +3,7 @@
 #include "Arduino.h"
 #include "Stream.h"
 
+class Command;
 class CommandLineParser;
 
 class CommandLine {
@@ -11,23 +12,19 @@ public:
 
 public:
     void Initialize(Stream *stream);
+    boolean AddCommand(Command *command);
     boolean Analyze();
 
 private:
     void analyzeChar(char ch);
-    size_t writeMessage(const char *message);
-    size_t writeChar(char ch);
-    void writeError(const char *message);
-    void writeInfo(const char *message);
-    bool executeLogCommand(const CommandLineParser *parser);
-    bool executeSetLogLevelCommand(const CommandLineParser *parser);
-    bool executeInfoCommand(const CommandLineParser *parser);
-    bool executeSetDigitalCommand(const CommandLineParser *parser);
-    bool executeSetServoCommand(const CommandLineParser *parser);
-    bool executeSetMotorCommand(const CommandLineParser *parser);
-    bool executeCommandLine(const char *line);
+    int executeCommandLine(const char *line);
 
 private:
+    enum {
+        kCommandCapacity = 16
+    };
+    Command *commands[kCommandCapacity];
+    int commandSize;
     String  buf;
     Stream *stream;
 };
