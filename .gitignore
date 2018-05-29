@@ -1,2 +1,13 @@
 .pioenvs
 .piolibdeps
+
+; for emacs
+.emacs.desktop
+.emacs.desktop.lock
+*~
+
+; for gtags
+GPATH
+GRTAGS
+GTAGS
+
