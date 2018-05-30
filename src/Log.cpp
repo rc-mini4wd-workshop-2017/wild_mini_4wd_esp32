@@ -32,7 +32,7 @@ int Log::Size()
 
 bool Log::GetLog(int index, String& log)
 {
-    if (index < 0 || log_size < index) {
+    if (index < 0 || log_size <= index) {
         return false;
     }
 
