@@ -7,6 +7,7 @@
 #include "SetDigitalCommand.h"
 #include "SetServoCommand.h"
 #include "SetMotorCommand.h"
+#include "GetDistanceCommand.h"
 
 BluetoothSerial stream;
 
@@ -17,6 +18,7 @@ SetLogLevelCommand setLogLevelCommand;
 SetDigitalCommand  setDigitalCommand;
 SetServoCommand    setServoCommand;
 SetMotorCommand    setMotorCommand;
+GetDistanceCommand getDistanceCommand;
 
 void setup()
 {
@@ -37,6 +39,8 @@ void setup()
 
     setMotorCommand.Initialize(&stream);
     commandLine.AddCommand(&setMotorCommand);
+
+    commandLine.AddCommand(&getDistanceCommand);
 
     Log::Info("Quattro Ace started...");
 }
