@@ -26,12 +26,34 @@ boolean CommandLine::AddCommand(Command *command)
 
 boolean CommandLine::Analyze()
 {
+    boolean bSerialResult = analyzeSerial();
+    boolean bStreamResult = analyzeStream();
+    return bSerialResult || bStreamResult;
+}
+
+boolean CommandLine::analyzeSerial()
+{
+    if (!Serial.available()) {
+        return false;
+    }
+
+    while (Serial.available()) {
+        char ch = Serial.read();
+        analyzeChar(ch);
+    }
+    return true;
+}
+
+boolean CommandLine::analyzeStream()
+{
     if (!stream->available()) {
         return false;
     }
 
-    char ch = stream->read();
-    analyzeChar(ch);
+    while (stream->available()) {
+        char ch = stream->read();
+        analyzeChar(ch);
+    }
     return true;
 }
 
@@ -40,12 +62,16 @@ void CommandLine::analyzeChar(char ch)
     if (ch == '\r') {
         return;
     }
+    Serial.write(ch);
     stream->write(ch);
 
     switch (ch) {
     case '\n':
         if (buf.length() != 0) {
             int result = executeCommandLine(buf.c_str());
+            Serial.write("\nresult: ");
+            Serial.print(result);
+            Serial.write("\n\n");
             stream->write("\nresult: ");
             stream->print(result);
             stream->write("\n\n");

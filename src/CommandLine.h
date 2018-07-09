@@ -16,6 +16,8 @@ public:
     boolean Analyze();
 
 private:
+    boolean analyzeSerial();
+    boolean analyzeStream();
     void analyzeChar(char ch);
     int executeCommandLine(const char *line);
 
