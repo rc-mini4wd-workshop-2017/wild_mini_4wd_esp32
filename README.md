@@ -118,7 +118,7 @@ state : HIGH, or LOW
 #### example
 
 ```
-$ set_digital 13 HIGH
+$ set_digital 26 HIGH
 ```
 
 ### set_servo
@@ -140,7 +140,7 @@ degrees : from 0 to 180
 #### example
 
 ```
-$ set_servo 13 0
+$ set_servo 12 77
 ```
 
 ### set_motor
