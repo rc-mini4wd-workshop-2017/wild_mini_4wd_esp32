@@ -16,17 +16,20 @@ public:
     int Execute(const CommandLineParser *parser) {
         const char *arg = parser->GetFirstArg();
         if (arg == 0) {
-            Log::Error("set_servo: invalid angle");
+            Log::Error("set_servo: no angle");
             return 2;
         }
-        int degrees = atoi(arg);
 
+        Drive(atoi(arg));
+        return 0;
+    }
+
+    int Drive(int degrees) {
         Servo servo;
         servo.attach(kPin);
         servo.write(degrees);
         vTaskDelay(200);
         servo.detach();
-
         return 0;
     }
 

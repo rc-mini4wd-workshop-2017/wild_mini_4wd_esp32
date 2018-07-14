@@ -28,6 +28,10 @@ public:
             control = atoi(arg);
         }
 
+        return Drive(control);
+    }
+
+    int Drive(int control) {
         for (int i=0; i<10; i++) {
             Wire.beginTransmission(kRv8830Address);
             Wire.write(kRv8830Control);
@@ -47,7 +51,6 @@ public:
             Wire.reset();
             Log::Error("set_motor: unknown result error");
         }
-
         return 3;
     }
 
