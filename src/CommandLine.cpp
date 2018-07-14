@@ -86,7 +86,7 @@ void CommandLine::analyzeChar(char ch)
 
 int CommandLine::executeCommandLine(const char *line)
 {
-    Log::Trace(line);
+    Log::Info(line);
     CommandLineParser parser(line);
     if (!parser.Parse()) {
         Log::Error("parser: buffer over error");

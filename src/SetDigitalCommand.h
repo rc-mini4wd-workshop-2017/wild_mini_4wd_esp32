@@ -22,10 +22,12 @@ public:
 
         const char *state = parser->NextArg(arg);
         if (strcmp(state, "HIGH") == 0) {
+            Log::Trace("set_digital: HIGH");
             pinMode(pin, OUTPUT);
             digitalWrite(pin, HIGH);
             return 0;
         } else if (strcmp(state, "LOW") == 0) {
+            Log::Trace("set_digital: LOW");
             pinMode(pin, OUTPUT);
             digitalWrite(pin, LOW);
             return 0;

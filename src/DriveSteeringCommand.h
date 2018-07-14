@@ -20,18 +20,18 @@ public:
     int Execute(const CommandLineParser *parser) {
         const char *direction = parser->GetFirstArg();
         if (direction == 0) {
-            Log::Info("drive_steering: (default: FORWARD)");
+            Log::Trace("drive_steering: (default: FORWARD)");
             return servo->Drive(kForward);
         }
 
         if (strcmp(direction, "LEFT") == 0) {
-            Log::Info("drive_steering: LEFT");
+            Log::Trace("drive_steering: LEFT");
             return servo->Drive(kLeft);
         } else if (strcmp(direction, "RIGHT") == 0) {
-            Log::Info("drive_steering: RIGHT");
+            Log::Trace("drive_steering: RIGHT");
             return servo->Drive(kRight);
         } else if (strcmp(direction, "FORWARD") == 0) {
-            Log::Info("drive_steering: FORWARD");
+            Log::Trace("drive_steering: FORWARD");
             return servo->Drive(kForward);
         }
 

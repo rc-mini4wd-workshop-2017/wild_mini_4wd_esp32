@@ -17,15 +17,19 @@ public:
     }
 
     int Execute(const CommandLineParser *parser) {
+        return (int)GetDistance();
+    }
+
+    float GetDistance() {
         float distance = 0;
         for (int i=0; i<kRetryTimes; i++) {
-            distance += (getDistance() / kRetryTimes);
+            distance += (getDistanceOne() / kRetryTimes);
         }
-        return (int)distance;
+        return distance;
     }
 
 private:
-    float getDistance() {
+    float getDistanceOne() {
         digitalWrite(kTrigger, HIGH);
         vTaskDelay(20);
         digitalWrite(kTrigger, LOW);

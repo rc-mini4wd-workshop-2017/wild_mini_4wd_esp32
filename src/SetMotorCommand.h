@@ -32,14 +32,14 @@ public:
     }
 
     int Drive(int control) {
-        for (int i=0; i<10; i++) {
+        for (int i=0; i<kWireRetryTimes; i++) {
             Wire.beginTransmission(kRv8830Address);
             Wire.write(kRv8830Control);
             Wire.write(control);
 
             int result = Wire.endTransmission();
             switch (result) {
-            case 0: Log::Info("set_motor: success");                          return 0;
+            case 0: Log::Trace("set_motor: success");                         return 0;
             case 1: Log::Error("set_motor: buffer overflow error");           return -1;
             case 2: Log::Error("set_motor: slave addr: nack received error"); return -2;
             case 3: Log::Error("set_motor: data: nack received error");       return -3;
@@ -56,9 +56,10 @@ public:
 
 private:
     enum {
-        kRv8830Control = 0,
-        kRv8830Address = 100,
-        kI2cSda        = 21,
-        kI2cScl        = 22,
+        kWireRetryTimes = 10,
+        kRv8830Control  = 0,
+        kRv8830Address  = 100,
+        kI2cSda         = 21,
+        kI2cScl         = 22,
     };
 };

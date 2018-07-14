@@ -47,7 +47,7 @@ void setup()
     setMotorCommand.Initialize(&stream);
     commandLine.AddCommand(&setMotorCommand);
 
-    driveMotorCommand.Initialize(&setMotorCommand);
+    driveMotorCommand.Initialize(&setMotorCommand, &getDistanceCommand);
     commandLine.AddCommand(&driveMotorCommand);
 
     commandLine.AddCommand(&getDistanceCommand);
