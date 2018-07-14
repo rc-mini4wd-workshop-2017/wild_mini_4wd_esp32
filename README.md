@@ -141,6 +141,24 @@ degrees : from 0 to 180
 $ set_servo 77
 ```
 
+### drive_steering
+
+Drive steering.
+
+#### synopsis
+
+```
+drive_steering <direction>
+```
+
+direction : FORWARD, RIGHT, LEFT (default: FORWARD)
+
+#### example
+
+```
+$ drive_steering RIGHT
+```
+
 ### set_motor
 
 Set motor pin(I2C).
@@ -173,4 +191,22 @@ revarsal (slow)
 
 ```
 $ set_motor 42
+```
+
+### drive_motor
+
+Drive motor.
+
+#### synopsis
+
+```
+drive_motor <direction>
+```
+
+direction : FORWARD, BACKWARD, STOP (default: STOP)
+
+#### example
+
+```
+$ drive_motor FORWARD
 ```
