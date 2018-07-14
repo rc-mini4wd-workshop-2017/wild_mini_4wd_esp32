@@ -123,15 +123,13 @@ $ set_digital 26 HIGH
 
 ### set_servo
 
-Set servo pin.
+Set servo angle.
 
 #### synopsis
 
 ```
-set_servo <pin> <degrees>
+set_servo <degrees>
 ```
-
-pin : 0, 1, 2, ...
 
 degrees : from 0 to 180
 
@@ -140,7 +138,7 @@ degrees : from 0 to 180
 #### example
 
 ```
-$ set_servo 12 77
+$ set_servo 77
 ```
 
 ### set_motor
@@ -150,12 +148,10 @@ Set motor pin(I2C).
 #### synopsis
 
 ```
-set_motor <i2c address> <vset>
+set_motor <vset>
 ```
 
-i2c address : 96, 97, 98, ..., 104 (default is 100)
-
-vset : from 0 to 255
+vset : from 0 to 255 (default: 0)
 
 see DRV8330 datasheet
 
@@ -164,17 +160,17 @@ see DRV8330 datasheet
 stand by
 
 ```
-$ set_motor 100 0
+$ set_motor 0
 ```
 
 forward (slow)
 
 ```
-$ set_motor 100 41
+$ set_motor 41
 ```
 
 revarsal (slow)
 
 ```
-$ set_motor 100 42
+$ set_motor 42
 ```

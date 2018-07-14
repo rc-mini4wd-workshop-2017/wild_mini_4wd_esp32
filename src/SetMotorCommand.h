@@ -23,21 +23,13 @@ public:
 
     int Execute(const CommandLineParser *parser) {
         const char *arg = parser->GetFirstArg();
-        if (arg == 0) {
-            Log::Error("set_motor: invalid address");
-            return 1;
+        int control = 0;
+        if (arg != 0) {
+            control = atoi(arg);
         }
-        int address = atoi(arg);
-
-        arg = parser->NextArg(arg);
-        if (arg == 0) {
-            Log::Error("set_servo: invalid angle");
-            return 2;
-        }
-        int control = atoi(arg);
 
         for (int i=0; i<10; i++) {
-            Wire.beginTransmission(address);
+            Wire.beginTransmission(kRv8830Address);
             Wire.write(kRv8830Control);
             Wire.write(control);
 
@@ -62,6 +54,7 @@ public:
 private:
     enum {
         kRv8830Control = 0,
+        kRv8830Address = 100,
         kI2cSda        = 21,
         kI2cScl        = 22,
     };
