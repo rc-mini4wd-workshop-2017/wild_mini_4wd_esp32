@@ -195,7 +195,7 @@ $ set_motor 42
 
 ### drive_motor
 
-Drive motor.
+Drive motor 2 seconds.
 
 #### synopsis
 
@@ -203,7 +203,7 @@ Drive motor.
 drive_motor <direction>
 ```
 
-direction : FORWARD, BACKWARD, STOP (default: STOP)
+direction : FORWARD, BACKWARD
 
 #### example
 

@@ -25,8 +25,7 @@ public:
             pinMode(pin, OUTPUT);
             digitalWrite(pin, HIGH);
             return 0;
-        }
-        if (strcmp(state, "LOW") == 0) {
+        } else if (strcmp(state, "LOW") == 0) {
             pinMode(pin, OUTPUT);
             digitalWrite(pin, LOW);
             return 0;

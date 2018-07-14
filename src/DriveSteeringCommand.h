@@ -27,12 +27,10 @@ public:
         if (strcmp(direction, "LEFT") == 0) {
             Log::Info("drive_steering: LEFT");
             return servo->Drive(kLeft);
-        }
-        if (strcmp(direction, "RIGHT") == 0) {
+        } else if (strcmp(direction, "RIGHT") == 0) {
             Log::Info("drive_steering: RIGHT");
             return servo->Drive(kRight);
-        }
-        if (strcmp(direction, "FORWARD") == 0) {
+        } else if (strcmp(direction, "FORWARD") == 0) {
             Log::Info("drive_steering: FORWARD");
             return servo->Drive(kForward);
         }
