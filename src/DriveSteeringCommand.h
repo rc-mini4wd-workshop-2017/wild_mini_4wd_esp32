@@ -20,8 +20,8 @@ public:
     int Execute(const CommandLineParser *parser) {
         const char *direction = parser->GetFirstArg();
         if (direction == 0) {
-            Log::Error("drive_steering: no direction");
-            return 2;
+            Log::Info("drive_steering: (default: FORWARD)");
+            return servo->Drive(kForward);
         }
 
         if (strcmp(direction, "LEFT") == 0) {

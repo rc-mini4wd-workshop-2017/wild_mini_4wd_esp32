@@ -20,7 +20,7 @@ public:
     int Execute(const CommandLineParser *parser) {
         const char *direction = parser->GetFirstArg();
         if (direction == 0) {
-            Log::Info("drive_motor: STOP");
+            Log::Info("drive_motor: (default: STOP)");
             return motor->Drive(kStopControl);
         }
 
