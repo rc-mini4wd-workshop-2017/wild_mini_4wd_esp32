@@ -67,7 +67,7 @@ public:
 
 private:
     enum {
-        kNearDistance     = 30,
+        kNearDistance     = 15,
         /**
          * GetDistance() : 60ms
          * GetDistance() x kDistanceTimesMax : 12s
