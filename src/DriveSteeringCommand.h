@@ -41,9 +41,9 @@ public:
 
 private:
     enum {
-        kLeft    = 62,
-        kRight   = 92,
-        kForward = 77,
+        kLeft    = 75,
+        kRight   = 105,
+        kForward = 90,
     };
 
     SetServoCommand *servo;
