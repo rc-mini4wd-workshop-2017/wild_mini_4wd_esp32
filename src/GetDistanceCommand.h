@@ -17,7 +17,14 @@ public:
     }
 
     int Execute(const CommandLineParser *parser) {
-        return (int)GetDistance();
+        float distance = GetDistance();
+        stream->write("distance=");
+        stream->write(distance);
+        stream->write("\n");
+        Serial.write("distance=");
+        Serial.print(distance);
+        Serial.write("\n");
+        return 0;
     }
 
     float GetDistance() {
