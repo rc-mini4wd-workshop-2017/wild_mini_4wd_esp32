@@ -12,6 +12,10 @@
 #include "DriveMotorCommand.h"
 #include "GetDistanceCommand.h"
 
+enum {
+    kDebugLed = 26,
+};
+
 BluetoothSerial stream;
 
 CommandLine           commandLine;
@@ -28,6 +32,8 @@ GetDistanceCommand    getDistanceCommand;
 
 void setup()
 {
+    pinMode(kDebugLed, OUTPUT);
+    digitalWrite(kDebugLed, HIGH);
     Serial.begin(115200);
     stream.begin("Quattro Ace");
 
@@ -61,11 +67,23 @@ void setup()
     commandLine.AddCommand(&getDistanceCommand);
 
     Log::Info("Quattro Ace started...");
+    digitalWrite(kDebugLed, LOW);
 }
 
 void loop()
 {
+    digitalWrite(kDebugLed, LOW);
     commandLine.Analyze();
+
+    static int executeTimes = 0;
+    if (executeTimes > 100) {
+        executeTimes = 0;
+    } else if (executeTimes > 50) {
+        digitalWrite(kDebugLed, HIGH);
+    } else {
+        digitalWrite(kDebugLed, LOW);
+    }
+    ++executeTimes;
 
     // Task watchdog got triggered.
     // https://github.com/espressif/arduino-esp32/issues/595
