@@ -18,8 +18,8 @@ public:
             if (!Log::GetLog(i, log)) {
                 return 0;
             }
-            stream->write(log.c_str());
-            stream->write("\n");
+            reply(log.c_str());
+            reply("\n");
         }
         return 0;
     }

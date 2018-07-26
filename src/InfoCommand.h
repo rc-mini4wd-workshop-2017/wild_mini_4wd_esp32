@@ -14,12 +14,9 @@ public:
     }
 
     int Execute(const CommandLineParser *parser) {
-        Serial.write("version=");
-        Serial.print(VERSION);
-        Serial.write("\n");
-        stream->write("version=");
-        stream->write(VERSION);
-        stream->write("\n");
+        reply("version=");
+        reply(VERSION);
+        reply("\n");
         return 0;
     }
 };
