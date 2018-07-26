@@ -25,60 +25,35 @@ public:
     }
 
     int Execute(const CommandLineParser *parser) {
-        const char *direction = parser->GetFirstArg();
-        if (direction == 0) {
-            Log::Error("drive_motor: no direction");
+        const char *arg = parser->GetFirstArg();
+        if (arg == 0) {
+            Log::Error("drive_motor: no vset");
             return 2;
         }
 
-        if (strcmp(direction, "FORWARD") == 0) {
-            Log::Trace("drive_motor: FORWARD");
-            int result = motor->Drive(kForwardControl);
-            if (result != 0) {
-                Log::Error("drive_motor: FORWARD");
-                return result;
-            }
-        } else if (strcmp(direction, "BACKWARD") == 0) {
-            Log::Trace("drive_motor: BACKWARD");
-            int result = motor->Drive(kBackwardControl);
-            if (result != 0) {
-                Log::Error("drive_motor: BACKWARD");
-                return result;
-            }
+        int control = atoi(arg);
+        int result = motor->Drive(control);
+        if (result != 0) {
+            Log::Error("drive_motor: START");
+            return result;
         }
 
-        const char *until = parser->NextArg(direction);
-        bool isTimeout = true;
+        const char *until = parser->NextArg(arg);
+        bool isTimeout = false;
         if (until == 0) {
             Log::Trace("drive_motor: interval");
             vTaskDelay(kInterval);
-            isTimeout = false;
         } else if (strcmp(until, "UNTIL_NEAR") == 0) {
-            Log::Trace("drive_motor: until near");
-            for (int i=0; i<kDistanceTimesMax; i++) {
-                if (distance->GetDistance() < kNearDistance) {
-                    Log::Info("drive_motor: detected UNTIL_NEAR");
-                    isTimeout = false;
-                    break;
-                }
-            }
+            driveUntilNear(&isTimeout);
         } else if (strcmp(until, "UNTIL_BUMPER") == 0) {
-            Log::Trace("drive_motor: until bumper");
-            for (int i=0; i<kBumperTimesMax; i++) {
-                if (button->IsPressed()) {
-                    Log::Info("drive_motor: detected UNTIL_BUMPER");
-                    isTimeout = false;
-                    break;
-                }
-                vTaskDelay(kBumperInterval);
-            }
+            driveUntilBumper(&isTimeout);
         }
 
         if (isTimeout) {
             Log::Info("drive_motor: timeout");
-            reply("drive_motor: timeout");
+            reply("drive_motor: timeout\n");
         }
-        int result = motor->Drive(kStopControl);
+        result = motor->Drive(kStopControl);
         if (result != 0) {
             Log::Error("drive_motor: STOP");
             return result;
@@ -103,11 +78,34 @@ private:
         kBumperTimesMax   = 200,
         kInterval         = 2000,
         kStopControl      = 0,
-        kForwardControl   = 81,
-        kBackwardControl  = 82,
     };
 
     SetMotorCommand       *motor;
     GetDistanceCommand    *distance;
     GetButtonStateCommand *button;
+
+    void driveUntilNear(bool *isTimeout) {
+        Log::Trace("drive_motor: until near");
+        for (int i=0; i<kDistanceTimesMax; i++) {
+            if (distance->GetDistance() < kNearDistance) {
+                Log::Info("drive_motor: detected UNTIL_NEAR");
+                *isTimeout = false;
+                return;
+            }
+        }
+        *isTimeout = true;
+    }
+
+    void driveUntilBumper(bool *isTimeout) {
+        Log::Trace("drive_motor: until bumper");
+        for (int i=0; i<kBumperTimesMax; i++) {
+            if (button->IsPressed()) {
+                Log::Info("drive_motor: detected UNTIL_BUMPER");
+                *isTimeout = false;
+                return;
+            }
+            vTaskDelay(kBumperInterval);
+        }
+        *isTimeout = true;
+    }
 };

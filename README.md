@@ -200,10 +200,11 @@ Drive motor 2 seconds.
 #### synopsis
 
 ```
-drive_motor <direction> <until>
+drive_motor <vset> <until>
 ```
 
-direction : FORWARD, BACKWARD
+vset : from 0 to 255 (default: 0)
+       see DRV8330 datasheet
 until(option) : UNTIL_NEAR, UNTIL_BUMPER
 
 #### example
