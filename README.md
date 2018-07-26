@@ -200,10 +200,11 @@ Drive motor 2 seconds.
 #### synopsis
 
 ```
-drive_motor <direction>
+drive_motor <direction> <until>
 ```
 
 direction : FORWARD, BACKWARD
+until(option) : UNTIL_NEAR
 
 #### example
 
