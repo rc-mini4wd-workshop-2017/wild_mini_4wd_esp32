@@ -3,6 +3,7 @@
 #include "CommandLine.h"
 #include "InfoCommand.h"
 #include "LogCommand.h"
+#include "GetButtonStateCommand.h"
 #include "SetLogLevelCommand.h"
 #include "SetDigitalCommand.h"
 #include "SetServoCommand.h"
@@ -13,16 +14,17 @@
 
 BluetoothSerial stream;
 
-CommandLine          commandLine;
-InfoCommand          infoCommand;
-LogCommand           logCommand;
-SetLogLevelCommand   setLogLevelCommand;
-SetDigitalCommand    setDigitalCommand;
-SetServoCommand      setServoCommand;
-DriveSteeringCommand driveSteeringCommand;
-SetMotorCommand      setMotorCommand;
-DriveMotorCommand    driveMotorCommand;
-GetDistanceCommand   getDistanceCommand;
+CommandLine           commandLine;
+InfoCommand           infoCommand;
+LogCommand            logCommand;
+GetButtonStateCommand getButtonStateCommand;
+SetLogLevelCommand    setLogLevelCommand;
+SetDigitalCommand     setDigitalCommand;
+SetServoCommand       setServoCommand;
+DriveSteeringCommand  driveSteeringCommand;
+SetMotorCommand       setMotorCommand;
+DriveMotorCommand     driveMotorCommand;
+GetDistanceCommand    getDistanceCommand;
 
 void setup()
 {
@@ -37,6 +39,9 @@ void setup()
     logCommand.Initialize(&stream);
     commandLine.AddCommand(&logCommand);
 
+    getButtonStateCommand.Initialize(&stream);
+    commandLine.AddCommand(&getButtonStateCommand);
+
     commandLine.AddCommand(&setLogLevelCommand);
     commandLine.AddCommand(&setDigitalCommand);
     commandLine.AddCommand(&setServoCommand);
@@ -47,7 +52,10 @@ void setup()
     setMotorCommand.Initialize(&stream);
     commandLine.AddCommand(&setMotorCommand);
 
-    driveMotorCommand.Initialize(&setMotorCommand, &getDistanceCommand);
+    driveMotorCommand.Initialize(&stream,
+                                 &setMotorCommand,
+                                 &getDistanceCommand,
+                                 &getButtonStateCommand);
     commandLine.AddCommand(&driveMotorCommand);
 
     commandLine.AddCommand(&getDistanceCommand);

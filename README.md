@@ -204,7 +204,7 @@ drive_motor <direction> <until>
 ```
 
 direction : FORWARD, BACKWARD
-until(option) : UNTIL_NEAR
+until(option) : UNTIL_NEAR, UNTIL_BUMPER
 
 #### example
 

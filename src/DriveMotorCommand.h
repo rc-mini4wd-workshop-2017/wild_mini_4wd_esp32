@@ -10,9 +10,14 @@ public:
     ~DriveMotorCommand() {}
 
 public:
-    virtual void Initialize(SetMotorCommand *motor, GetDistanceCommand *distance) {
+    virtual void Initialize(Stream *stream,
+                            SetMotorCommand *motor,
+                            GetDistanceCommand *distance,
+                            GetButtonStateCommand *button) {
+        Command::Initialize(stream);
         this->motor    = motor;
         this->distance = distance;
+        this->button   = button;
     }
 
     const char *GetName() {
@@ -43,19 +48,36 @@ public:
         }
 
         const char *until = parser->NextArg(direction);
+        bool isTimeout = true;
         if (until == 0) {
             Log::Trace("drive_motor: interval");
             vTaskDelay(kInterval);
+            isTimeout = false;
         } else if (strcmp(until, "UNTIL_NEAR") == 0) {
             Log::Trace("drive_motor: until near");
             for (int i=0; i<kDistanceTimesMax; i++) {
                 if (distance->GetDistance() < kNearDistance) {
-                    Log::Error("drive_motor: UNTIL_NEAR timeout");
+                    Log::Info("drive_motor: detected UNTIL_NEAR");
+                    isTimeout = false;
                     break;
                 }
             }
+        } else if (strcmp(until, "UNTIL_BUMPER") == 0) {
+            Log::Trace("drive_motor: until bumper");
+            for (int i=0; i<kBumperTimesMax; i++) {
+                if (button->IsPressed()) {
+                    Log::Info("drive_motor: detected UNTIL_BUMPER");
+                    isTimeout = false;
+                    break;
+                }
+                vTaskDelay(kBumperInterval);
+            }
         }
 
+        if (isTimeout) {
+            Log::Info("drive_motor: timeout");
+            reply("drive_motor: timeout");
+        }
         int result = motor->Drive(kStopControl);
         if (result != 0) {
             Log::Error("drive_motor: STOP");
@@ -73,12 +95,19 @@ private:
          * GetDistance() x kDistanceTimesMax : 12s
          */
         kDistanceTimesMax = 200,
+        /**
+         * kBumperInterval : 60ms
+         * kBumperInterval x kBumperTimesMax : 12s
+         */
+        kBumperInterval   = 60,
+        kBumperTimesMax   = 200,
         kInterval         = 2000,
         kStopControl      = 0,
         kForwardControl   = 81,
         kBackwardControl  = 82,
     };
 
-    SetMotorCommand    *motor;
-    GetDistanceCommand *distance;
+    SetMotorCommand       *motor;
+    GetDistanceCommand    *distance;
+    GetButtonStateCommand *button;
 };
