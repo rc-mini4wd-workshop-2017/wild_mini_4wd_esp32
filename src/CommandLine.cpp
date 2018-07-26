@@ -100,7 +100,7 @@ int CommandLine::executeCommandLine(const char *line)
             String log = command->GetName();
             log += ": returns ";
             log += result;
-            Log::Trace(log.c_str());
+            Log::Info(log.c_str());
             return result;
         }
     }
