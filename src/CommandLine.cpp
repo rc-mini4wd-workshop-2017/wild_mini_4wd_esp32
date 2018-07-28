@@ -25,6 +25,7 @@ boolean CommandLine::AddCommand(Command *command)
     }
     commands[commandSize] = command;
     ++commandSize;
+    return true;
 }
 
 boolean CommandLine::Analyze()
