@@ -18,10 +18,7 @@ public:
 
     int Execute(const CommandLineParser *parser) {
         int distance = GetDistance();
-        reply("distance=");
-        reply(distance);
-        reply("\n");
-        return 0;
+        return distance;
     }
 
     float GetDistance() {
