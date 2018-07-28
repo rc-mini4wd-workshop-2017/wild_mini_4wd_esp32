@@ -32,31 +32,28 @@ public:
     }
 
     int Drive(int control) {
-        for (int i=0; i<kWireRetryTimes; i++) {
-            Wire.beginTransmission(kRv8830Address);
-            Wire.write(kRv8830Control);
-            Wire.write(control);
+        Wire.beginTransmission(kRv8830Address);
+        Wire.write(kRv8830Control);
+        Wire.write(control);
 
-            int result = Wire.endTransmission();
-            switch (result) {
-            case 0: Log::Trace("set_motor: success");                         return 0;
-            case 1: Log::Error("set_motor: buffer overflow error");           return -1;
-            case 2: Log::Error("set_motor: slave addr: nack received error"); return -2;
-            case 3: Log::Error("set_motor: data: nack received error");       return -3;
-            case 4: Log::Error("set_motor: error");                           return -4;
-            }
-            // workaround for esp-32 i2c bug
-            // see http://d.hatena.ne.jp/wakwak_koba/20171228
-            // see https://github.com/espressif/arduino-esp32/issues/349
-            Wire.reset();
-            Log::Error("set_motor: unknown result error");
+        int result = Wire.endTransmission();
+        switch (result) {
+        case 0: Log::Trace("set_motor: success");                         return 0;
+        case 1: Log::Error("set_motor: buffer overflow error");           return -1;
+        case 2: Log::Error("set_motor: slave addr: nack received error"); return -2;
+        case 3: Log::Error("set_motor: data: nack received error");       return -3;
+        case 4: Log::Error("set_motor: error");                           return -4;
         }
+        // workaround for esp-32 i2c bug
+        // see http://d.hatena.ne.jp/wakwak_koba/20171228
+        // see https://github.com/espressif/arduino-esp32/issues/349
+        // Wire.reset();
+        Log::Error("set_motor: unknown result error(workaround for esp-32 i2c bug)");
         return 3;
     }
 
 private:
     enum {
-        kWireRetryTimes = 10,
         kRv8830Control  = 0,
         kRv8830Address  = 100,
         kI2cSda         = 21,
