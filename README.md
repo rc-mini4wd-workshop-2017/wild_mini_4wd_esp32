@@ -212,3 +212,42 @@ until(option) : UNTIL_NEAR, UNTIL_BUMPER
 ```
 $ drive_motor FORWARD
 ```
+
+## How to build esp-32 FW
+
+### Install platformio
+
+see [PlatformIO > Docs > PlatformIO Core > Installation](http://docs.platformio.org/en/latest/installation.html)
+
+### How to modify flash size
+
+edit default.csv
+
+```diff
+--- ~/.platformio/packages/framework-arduinoespressif32/tools/partitions/default.csv.default	2018-03-08 03:54:26.070449130 +0900
++++ ~/.platformio/packages/framework-arduinoespressif32/tools/partitions/default.csv	2018-03-08 03:55:06.422823814 +0900
+@@ -1,7 +1,7 @@
+ # Name,   Type, SubType, Offset,  Size, Flags
+ nvs,      data, nvs,     0x9000,  0x5000,
+ otadata,  data, ota,     0xe000,  0x2000,
+-app0,     app,  ota_0,   0x10000, 0x140000,
+-app1,     app,  ota_1,   0x150000,0x140000,
++app0,     app,  ota_0,   0x10000, 0x200000,
++app1,     app,  ota_1,   0x210000,0x80000,
+ eeprom,   data, 0x99,    0x290000,0x1000,
+ spiffs,   data, spiffs,  0x291000,0x16F000,
+```
+
+### How to build
+
+```
+$ git clone git@github.com:rc-mini4wd-workshop-2017/wild_mini_4wd_esp32.git
+$ cd wild_mini_4wd_esp32
+$ pio run
+```
+
+### How to upload
+
+```
+$ pio run --target upload
+```
