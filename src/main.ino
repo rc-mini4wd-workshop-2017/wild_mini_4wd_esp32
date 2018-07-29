@@ -1,6 +1,7 @@
 // Copyright 2018 Quattro Ace. All rights reserved.
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file.
+#ifdef TARGET
 
 #include "BluetoothSerial.h"
 #include "Log.h"
@@ -93,3 +94,5 @@ void loop()
     // https://github.com/espressif/arduino-esp32/issues/595
     vTaskDelay(10);
 }
+
+#endif // TARGET
