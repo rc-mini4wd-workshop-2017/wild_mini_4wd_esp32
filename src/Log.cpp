@@ -4,15 +4,21 @@
 
 #include "Log.h"
 
+#ifdef ARDUINO
+#include <Arduino.h>
+#endif
+
 static int log_size             = 0;
 static int log_next_write_index = 0;
 static int log_level            = Log::LOG_LEVEL_TRACE;
 
-static String logs[Log::LOG_CAPACITY];
+static std::string logs[Log::LOG_CAPACITY];
 
-static void add(const String& message)
+static void add(const std::string& message)
 {
-    Serial.println(message);
+#ifdef ARDUINO
+    Serial.println(message.c_str());
+#endif
 
     logs[log_next_write_index] = message;
 
@@ -34,7 +40,7 @@ int Log::Size()
     return log_size;
 }
 
-bool Log::GetLog(int index, String& log)
+bool Log::GetLog(int index, std::string& log)
 {
     if (index < 0 || log_size <= index) {
         return false;
@@ -59,7 +65,7 @@ void Log::Fatal(const char *message)
     if (log_level > LOG_LEVEL_FATAL) {
         return;
     }
-    add(String("[FATAL] ") + message);
+    add(std::string("[FATAL] ") + message);
 }
 
 void Log::Error(const char *message)
@@ -67,7 +73,7 @@ void Log::Error(const char *message)
     if (log_level > LOG_LEVEL_ERROR) {
         return;
     }
-    add(String("[ERROR] ") + message);
+    add(std::string("[ERROR] ") + message);
 }
 
 void Log::Warn(const char *message)
@@ -75,7 +81,7 @@ void Log::Warn(const char *message)
     if (log_level > LOG_LEVEL_WARN) {
         return;
     }
-    add(String("[WARN ] ") + message);
+    add(std::string("[WARN ] ") + message);
 }
 
 void Log::Info(const char *message)
@@ -83,7 +89,7 @@ void Log::Info(const char *message)
     if (log_level > LOG_LEVEL_INFO) {
         return;
     }
-    add(String("[INFO ] ") + message);
+    add(std::string("[INFO ] ") + message);
 }
 
 void Log::Debug(const char *message)
@@ -91,7 +97,7 @@ void Log::Debug(const char *message)
     if (log_level > LOG_LEVEL_DEBUG) {
         return;
     }
-    add(String("[DEBUG] ") + message);
+    add(std::string("[DEBUG] ") + message);
 }
 
 void Log::Trace(const char *message)
@@ -99,5 +105,11 @@ void Log::Trace(const char *message)
     if (log_level > LOG_LEVEL_TRACE) {
         return;
     }
-    add(String("[TRACE] ") + message);
+    add(std::string("[TRACE] ") + message);
+}
+
+void Log::Clean()
+{
+    log_size = 0;
+    log_next_write_index = 0;
 }
