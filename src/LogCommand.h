@@ -5,6 +5,7 @@
 #pragma once
 
 #include "Command.h"
+#include <string>
 
 class LogCommand : public Command {
 public:
@@ -18,7 +19,7 @@ public:
 
     int Execute(const CommandLineParser *parser) {
         for (int i=0; i<Log::LOG_CAPACITY; i++) {
-            String log;
+            std::string log;
             if (!Log::GetLog(i, log)) {
                 return 0;
             }
