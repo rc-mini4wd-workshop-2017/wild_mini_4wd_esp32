@@ -195,22 +195,39 @@ $ set_motor 42
 
 ### drive_motor
 
-Drive motor 2 seconds.
-
 #### synopsis
 
 ```
-drive_motor <vset> <until>
+drive_motor <vset> <until> <value>
 ```
 
 vset : from 0 to 255 (default: 0)
        see DRV8330 datasheet
-until(option) : UNTIL_NEAR, UNTIL_BUMPER
+until : UNTIL_TIME, UNTIL_NEAR, UNTIL_BUMPER
+value(option) : seconds if UNTIL_TIME. cm if UNTIL_NEAR.
 
 #### example
 
 ```
-$ drive_motor FORWARD
+$ drive_motor 61 UNTIL_TIME 2
+$ drive_motor 61 UNTIL_NEAR 20
+$ drive_motor 61 UNTIL_BUMPER
+```
+
+### reset
+
+Reset motor and servo.
+
+#### synopsis
+
+```
+reset
+```
+
+#### example
+
+```
+$ reset
 ```
 
 ## How to build esp-32 FW
