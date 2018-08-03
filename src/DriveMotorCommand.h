@@ -43,14 +43,29 @@ public:
         }
 
         const char *until = parser->NextArg(arg);
+        const char *value = parser->NextArg(until);
         bool isTimeout = false;
-        if (until == 0) {
-            Log::Trace("drive_motor: interval");
-            vTaskDelay(kInterval);
+        if (strcmp(until, "UNTIL_TIME") == 0) {
+            if (value == 0) {
+                Log::Error("drive_motor: not found UNTIL_TIME's value");
+                return result;
+            }
+            int timeout = atoi(value);
+            Log::Trace("drive_motor: UNTIL_TIME");
+            vTaskDelay(timeout * 1000);
         } else if (strcmp(until, "UNTIL_NEAR") == 0) {
-            driveUntilNear(&isTimeout);
+            if (value == 0) {
+                Log::Error("drive_motor: not found UNTIL_NEAR's value");
+                return result;
+            }
+            int nearDistance = atoi(value);
+            Log::Trace("drive_motor: UNTIL_NEAR");
+            driveUntilNear(nearDistance, &isTimeout);
         } else if (strcmp(until, "UNTIL_BUMPER") == 0) {
             driveUntilBumper(&isTimeout);
+        } else {
+            Log::Error("drive_motor: until_xxx");
+            return result;
         }
 
         if (isTimeout) {
@@ -68,7 +83,6 @@ public:
 
 private:
     enum {
-        kNearDistance     = 15,
         /**
          * GetDistance() : 60ms
          * GetDistance() x kDistanceTimesMax : 12s
@@ -80,7 +94,6 @@ private:
          */
         kBumperInterval   = 60,
         kBumperTimesMax   = 200,
-        kInterval         = 2000,
         kStopControl      = 0,
     };
 
@@ -88,10 +101,10 @@ private:
     GetDistanceCommand    *distance;
     GetButtonStateCommand *button;
 
-    void driveUntilNear(bool *isTimeout) {
+    void driveUntilNear(int nearDistance, bool *isTimeout) {
         Log::Trace("drive_motor: until near");
         for (int i=0; i<kDistanceTimesMax; i++) {
-            if (distance->GetDistance() < kNearDistance) {
+            if (distance->GetDistance() < nearDistance) {
                 Log::Info("drive_motor: detected UNTIL_NEAR");
                 *isTimeout = false;
                 return;
