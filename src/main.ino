@@ -15,6 +15,7 @@
 #include "DriveSteeringCommand.h"
 #include "SetMotorCommand.h"
 #include "DriveMotorCommand.h"
+#include "ResetCommand.h"
 #include "GetDistanceCommand.h"
 
 enum {
@@ -33,6 +34,7 @@ SetServoCommand       setServoCommand;
 DriveSteeringCommand  driveSteeringCommand;
 SetMotorCommand       setMotorCommand;
 DriveMotorCommand     driveMotorCommand;
+ResetCommand          resetCommand;
 GetDistanceCommand    getDistanceCommand;
 
 void setup()
@@ -68,6 +70,11 @@ void setup()
                                  &getDistanceCommand,
                                  &getButtonStateCommand);
     commandLine.AddCommand(&driveMotorCommand);
+
+    resetCommand.Initialize(&stream,
+                            &setMotorCommand,
+                            &setServoCommand);
+    commandLine.AddCommand(&resetCommand);
 
     commandLine.AddCommand(&getDistanceCommand);
 
