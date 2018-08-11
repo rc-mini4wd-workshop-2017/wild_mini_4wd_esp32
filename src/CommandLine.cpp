@@ -8,7 +8,7 @@
 #include "Command.h"
 #include "CommandLineParser.h"
 
-CommandLine::CommandLine()
+CommandLine::CommandLine() : commandSize(0)
 {
 }
 

@@ -18,16 +18,28 @@
 
 class TestCommand : public Command {
 public:
-    TestCommand() {}
+    TestCommand() : countOfExecute(0) {}
     ~TestCommand() {}
 
 public:
-    const char *GetName() {
+    virtual const char *GetName() {
         return "test";
     }
-    int Execute(const CommandLineParser *parser) {
+    virtual int Execute(const CommandLineParser *parser) {
+        ++countOfExecute;
+
+        const char *arg = parser->GetFirstArg();
+        UT_ASSERT_STRING("0", arg);
+        UT_ASSERT_STRING("1", arg = parser->NextArg(arg));
+        UT_ASSERT_STRING("2", arg = parser->NextArg(arg));
         return 0;
     }
+    int GetCountOfExecute() {
+        return countOfExecute;
+    }
+
+private:
+    int countOfExecute;
 };
 
 void test_initialize()
@@ -56,8 +68,9 @@ void test_analyze()
     TestCommand command;
     cl.AddCommand(&command);
 
-    stream.AppendReadBuffer("test 0 1 2 \n");
+    stream.AppendReadBuffer("test 0 1 2\n");
     cl.Analyze();
+    UT_ASSERT_INT(1, command.GetCountOfExecute());
 }
 
 int main(int argc, char **argv)

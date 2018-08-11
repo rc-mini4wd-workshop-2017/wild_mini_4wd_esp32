@@ -7,7 +7,7 @@ TEST_CASES     := $(wildcard test_*.cpp)
 TEST_CASES_BIN := $(patsubst %.cpp,%,$(TEST_CASES))
 VPATH          := $(TEST_DIR)
 INCLUDE_FLAGS  := -I../src
-CPP_FLAGS      := -Wall -Werror $(INCLUDE_FLAGS) -DTEST_ENABLE_UT
+CPP_FLAGS      := -Wall -Werror -g $(INCLUDE_FLAGS)
 
 test_%: test_%.cpp
 	g++ $^ -o $@ $(CPP_FLAGS)

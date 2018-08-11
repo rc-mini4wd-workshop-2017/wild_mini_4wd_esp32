@@ -8,22 +8,20 @@
 
 class IOStream : public Stream {
 public:
-    IOStream(std::istream &readStream, std::ostream &writeWtream)
+    IOStream(std::istream &readStream, std::ostream &writeStream)
         : readStream(readStream), writeStream(writeStream) {}
     virtual ~IOStream() {}
 
 public:
     int available() {
-        return readStream.gcount();
+        return readStream.rdbuf()->in_avail();
     }
     int read() {
         if (available() == 0) {
             return -1;
         }
 
-        char ch;
-        readStream >> ch;
-        return ch;
+        return readStream.get();
     }
     size_t write(uint8_t ch) {
         writeStream << ch;

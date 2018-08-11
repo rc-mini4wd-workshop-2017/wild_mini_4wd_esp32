@@ -4,6 +4,9 @@
 
 #pragma once
 
+#ifdef ARDUINO
+#include "Arduino.h"
+#endif
 #include "CommandLineParser.h"
 
 class Stream;
