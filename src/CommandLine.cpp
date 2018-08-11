@@ -3,8 +3,9 @@
 // license that can be found in the LICENSE file.
 
 #include "CommandLine.h"
+
+#include "log/Log.h"
 #include "Version.h"
-#include "Log.h"
 #include "Command.h"
 #include "CommandLineParser.h"
 

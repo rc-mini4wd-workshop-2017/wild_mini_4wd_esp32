@@ -4,7 +4,8 @@
 #ifdef TARGET
 
 #include "BluetoothSerial.h"
-#include "Log.h"
+#include "log/Log.h"
+
 #include "CommandLine.h"
 #include "InfoCommand.h"
 #include "LogCommand.h"
