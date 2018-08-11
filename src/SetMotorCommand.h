@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Command.h"
+#include "command/Command.h"
 #include "Wire.h"
 
 class SetMotorCommand : public Command {

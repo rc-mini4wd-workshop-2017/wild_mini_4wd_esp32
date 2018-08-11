@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Command.h"
+#include "command/Command.h"
 #include "SetServoCommand.h"
 
 class DriveSteeringCommand : public Command {

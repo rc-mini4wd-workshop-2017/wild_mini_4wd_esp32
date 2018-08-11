@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "Command.h"
+#include "command/Command.h"
 
 class GetButtonStateCommand : public Command {
 public:

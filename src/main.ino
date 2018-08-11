@@ -5,8 +5,8 @@
 
 #include "BluetoothSerial.h"
 #include "log/Log.h"
+#include "command/CommandLine.h"
 
-#include "CommandLine.h"
 #include "InfoCommand.h"
 #include "LogCommand.h"
 #include "GetButtonStateCommand.h"
