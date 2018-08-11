@@ -18,7 +18,7 @@ void CommandLine::Initialize(Stream *stream)
     buf = "";
 }
 
-boolean CommandLine::AddCommand(Command *command)
+bool CommandLine::AddCommand(Command *command)
 {
     if (commandSize >= kCommandCapacity) {
         return false;
@@ -28,14 +28,14 @@ boolean CommandLine::AddCommand(Command *command)
     return true;
 }
 
-boolean CommandLine::Analyze()
+bool CommandLine::Analyze()
 {
-    boolean bSerialResult = analyzeSerial();
-    boolean bStreamResult = analyzeStream();
+    bool bSerialResult = analyzeSerial();
+    bool bStreamResult = analyzeStream();
     return bSerialResult || bStreamResult;
 }
 
-boolean CommandLine::analyzeSerial()
+bool CommandLine::analyzeSerial()
 {
     if (!Serial.available()) {
         return false;
@@ -48,7 +48,7 @@ boolean CommandLine::analyzeSerial()
     return true;
 }
 
-boolean CommandLine::analyzeStream()
+bool CommandLine::analyzeStream()
 {
     if (!stream->available()) {
         return false;
@@ -83,7 +83,7 @@ void CommandLine::analyzeChar(char ch)
         buf = "";
         break;
     default:
-        buf.concat(ch);
+        buf += ch;
         break;
     }
 }
@@ -101,7 +101,7 @@ int CommandLine::executeCommandLine(const char *line)
         Command* command = commands[i];
         if (strcmp(parser.GetName(), command->GetName()) == 0) {
             int result = command->Execute(&parser);
-            String log = command->GetName();
+            std::string log = command->GetName();
             log += ": returns ";
             log += result;
             Log::Info(log.c_str());

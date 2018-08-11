@@ -4,9 +4,9 @@
 
 #pragma once
 
-#include "Arduino.h"
-#include "Stream.h"
+#include <string>
 
+class Stream;
 class Command;
 class CommandLineParser;
 
@@ -16,12 +16,12 @@ public:
 
 public:
     void Initialize(Stream *stream);
-    boolean AddCommand(Command *command);
-    boolean Analyze();
+    bool AddCommand(Command *command);
+    bool Analyze();
 
 private:
-    boolean analyzeSerial();
-    boolean analyzeStream();
+    bool analyzeSerial();
+    bool analyzeStream();
     void analyzeChar(char ch);
     int executeCommandLine(const char *line);
 
@@ -31,6 +31,6 @@ private:
     };
     Command *commands[kCommandCapacity];
     int commandSize;
-    String  buf;
+    std::string  buf;
     Stream *stream;
 };
