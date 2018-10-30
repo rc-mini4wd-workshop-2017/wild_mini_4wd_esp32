@@ -18,6 +18,7 @@
 #include "DriveMotorCommand.h"
 #include "ResetCommand.h"
 #include "GetDistanceCommand.h"
+#include "FireLedGunCommand.h"
 
 enum {
     kDebugLed = 26,
@@ -37,6 +38,7 @@ SetMotorCommand       setMotorCommand;
 DriveMotorCommand     driveMotorCommand;
 ResetCommand          resetCommand;
 GetDistanceCommand    getDistanceCommand;
+FireLedGunCommand     fireLedGunCommand;
 
 void setup()
 {
@@ -78,6 +80,7 @@ void setup()
     commandLine.AddCommand(&resetCommand);
 
     commandLine.AddCommand(&getDistanceCommand);
+    commandLine.AddCommand(&fireLedGunCommand);
 
     Log::Info("Quattro Ace started...");
     digitalWrite(kDebugLed, LOW);

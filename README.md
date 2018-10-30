@@ -48,6 +48,8 @@ CommandLineAPI are enabled in Bluetooth (SPP).
 
 Set log level.
 
+since v0.0.3
+
 #### synopsis
 
 ```
@@ -68,6 +70,8 @@ $ set_loglevel TRACE
 Show latest logs.
 The log capacity is 64.
 
+since v0.0.3
+
 #### synopsis
 
 ```
@@ -84,6 +88,8 @@ $ log
 ### info
 
 Show system info.
+
+since v0.0.3
 
 #### synopsis
 
@@ -103,6 +109,8 @@ version=0.0.1
 Set digital pin.
 HIGH or LOW.
 
+since v0.0.3
+
 #### synopsis
 
 ```
@@ -121,9 +129,37 @@ state : HIGH, or LOW
 $ set_digital 26 HIGH
 ```
 
+### fire_led_gun
+
+Fire led gun.
+
+1. set High
+2. wait 100ms
+3. set Low
+
+since v0.0.6
+
+#### synopsis
+
+```
+fire_led_gun <pin>
+```
+
+pin : 0, 1, 2, ...
+
+[pinmap](https://raw.githubusercontent.com/gojimmypi/ESP32/master/images/myESP32%20DevKitC%20pinout.png)
+
+#### example
+
+```
+$ fire_led_gun 26
+```
+
 ### set_servo
 
 Set servo angle.
+
+since v0.0.3
 
 #### synopsis
 
@@ -145,6 +181,8 @@ $ set_servo 77
 
 Drive steering.
 
+since v0.0.3
+
 #### synopsis
 
 ```
@@ -162,6 +200,8 @@ $ drive_steering RIGHT
 ### set_motor
 
 Set motor pin(I2C).
+
+since v0.0.3
 
 #### synopsis
 
@@ -195,6 +235,8 @@ $ set_motor 42
 
 ### drive_motor
 
+since v0.0.5
+
 #### synopsis
 
 ```
@@ -217,6 +259,8 @@ $ drive_motor 61 UNTIL_BUMPER
 ### reset
 
 Reset motor and servo.
+
+since v0.0.5
 
 #### synopsis
 
