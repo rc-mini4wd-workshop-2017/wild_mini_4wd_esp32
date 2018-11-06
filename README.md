@@ -62,7 +62,11 @@ loglevel : TRACE, DEBUG, INFO, WARN, ERROR, or FATAL
 
 ```
 $ set_loglevel TRACE
-[INFO ] loglevel: set TRACE
+[INFO ] set_loglevel TRACE
+[INFO ] set_loglevel: set TRACE
+[INFO ] set_loglevel: returns 0
+
+result: 0
 ```
 
 ### log
@@ -83,6 +87,10 @@ log
 ```
 $ log
 [INFO ] Quattro Ace started...
+[INFO ] log
+[INFO ] log: returns 0
+
+result: 0
 ```
 
 ### info
@@ -101,7 +109,57 @@ info
 
 ```
 $ info
-version=0.0.1
+[INFO ] info
+version=0.0.6
+[INFO ] info: returns 0
+
+result: 0
+```
+
+### get_button_state
+
+Get button state.
+HIGH or LOW.
+
+since v0.0.3
+
+#### synopsis
+
+```
+get_button_state
+```
+
+#### example
+
+```
+$ get_button_state
+[INFO ] get_button_state
+button state: not pressed
+[INFO ] get_button_state: returns 0
+
+result: 0
+```
+
+### get_distance
+
+Get distance(cm).
+
+since v0.0.3
+
+#### synopsis
+
+```
+get_distance
+```
+
+#### example
+
+```
+$ get_distance
+[INFO ] get_distance
+[INFO ] get_distance: returns 107
+
+result: 107
 ```
 
 ### set_digital
@@ -127,6 +185,10 @@ state : HIGH, or LOW
 
 ```
 $ set_digital 26 HIGH
+[INFO ] set_digital 26 HIGH
+[INFO ] set_digital: returns 0
+
+result: 0
 ```
 
 ### fire_led_gun
@@ -153,6 +215,10 @@ pin : 0, 1, 2, ...
 
 ```
 $ fire_led_gun 26
+[INFO ] fire_led_gun 26
+[INFO ] fire_led_gun: returns 0
+
+result: 0
 ```
 
 ### set_servo
@@ -174,7 +240,11 @@ degrees : from 0 to 180
 #### example
 
 ```
-$ set_servo 77
+$ set_servo 90
+[INFO ] set_servo 90
+[INFO ] set_servo: returns 0
+
+result: 0
 ```
 
 ### drive_steering
@@ -195,6 +265,10 @@ direction : FORWARD, RIGHT, LEFT (default: FORWARD)
 
 ```
 $ drive_steering RIGHT
+[INFO ] drive_steering RIGHT
+[INFO ] drive_steering: returns 0
+
+result: 0
 ```
 
 ### set_motor
@@ -225,12 +299,20 @@ forward (slow)
 
 ```
 $ set_motor 41
+[INFO ] set_motor 41
+[INFO ] set_motor: returns 0
+
+result: 0
 ```
 
 revarsal (slow)
 
 ```
 $ set_motor 42
+[INFO ] set_motor 42
+[INFO ] set_motor: returns 0
+
+result: 0
 ```
 
 ### drive_motor
@@ -252,8 +334,26 @@ value(option) : seconds if UNTIL_TIME. cm if UNTIL_NEAR.
 
 ```
 $ drive_motor 61 UNTIL_TIME 2
+[INFO ] drive_motor 61 UNTIL_TIME 2
+[INFO ] drive_motor: returns 0
+
+result: 0
 $ drive_motor 61 UNTIL_NEAR 20
+drive_motor 61 UNTIL_NEAR 20
+[INFO ] drive_motor 61 UNTIL_NEAR 20
+[ERROR] get_distance: max distance
+[INFO ] drive_motor: detected UNTIL_NEAR
+[INFO ] drive_motor: returns 0
+
+result: 0
 $ drive_motor 61 UNTIL_BUMPER
+drive_motor 61 UNTIL_BUMPER
+[INFO ] drive_motor 61 UNTIL_BUMPER
+[INFO ] drive_motor: timeout
+drive_motor: timeout
+[INFO ] drive_motor: returns 0
+
+result: 0
 ```
 
 ### reset
@@ -272,6 +372,10 @@ reset
 
 ```
 $ reset
+[INFO ] reset
+[INFO ] reset: returns 0
+
+result: 0
 ```
 
 ## How to build esp-32 FW
@@ -279,25 +383,6 @@ $ reset
 ### Install platformio
 
 see [PlatformIO > Docs > PlatformIO Core > Installation](http://docs.platformio.org/en/latest/installation.html)
-
-### How to modify flash size
-
-edit default.csv
-
-```diff
---- ~/.platformio/packages/framework-arduinoespressif32/tools/partitions/default.csv.default	2018-03-08 03:54:26.070449130 +0900
-+++ ~/.platformio/packages/framework-arduinoespressif32/tools/partitions/default.csv	2018-03-08 03:55:06.422823814 +0900
-@@ -1,7 +1,7 @@
- # Name,   Type, SubType, Offset,  Size, Flags
- nvs,      data, nvs,     0x9000,  0x5000,
- otadata,  data, ota,     0xe000,  0x2000,
--app0,     app,  ota_0,   0x10000, 0x140000,
--app1,     app,  ota_1,   0x150000,0x140000,
-+app0,     app,  ota_0,   0x10000, 0x200000,
-+app1,     app,  ota_1,   0x210000,0x80000,
- eeprom,   data, 0x99,    0x290000,0x1000,
- spiffs,   data, spiffs,  0x291000,0x16F000,
-```
 
 ### How to build
 
@@ -310,5 +395,5 @@ $ pio run
 ### How to upload
 
 ```
-$ pio run --target upload
+$ pio run --target upload -e esp32dev
 ```
