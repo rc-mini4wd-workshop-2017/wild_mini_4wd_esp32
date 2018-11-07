@@ -214,8 +214,8 @@ pin : 0, 1, 2, ...
 #### example
 
 ```
-$ fire_led_gun 26
-[INFO ] fire_led_gun 26
+$ fire_led_gun 15
+[INFO ] fire_led_gun 15
 [INFO ] fire_led_gun: returns 0
 
 result: 0
